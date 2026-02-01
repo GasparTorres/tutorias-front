@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic'; // <--- AGREGADO PARA EL BUILD DE VERCEL
 
 import { Td, Tr } from "@chakra-ui/react";
 import { useState } from "react";

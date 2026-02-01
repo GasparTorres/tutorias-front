@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic'; // <--- AGREGADO PARA EL BUILD DE VERCEL
 
 import {
   DeleteIcon,
@@ -215,7 +216,7 @@ const DocumentsPage: React.FC = () => {
                   <MenuButton
                     as={Button}
                     rightIcon={<SmallAddIcon />}
-                    backgroundColor="gray.200" 
+                    backgroundColor="gray.200"
                     color="gray.700"
                     borderRadius="10px"
                     px={6}

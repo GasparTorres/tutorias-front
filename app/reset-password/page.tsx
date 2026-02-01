@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic'; // <--- AGREGADO PARA EL BUILD DE VERCEL
 
 import { useSearchParams } from "next/navigation";
 import CreatePassword from "./reset-password";
