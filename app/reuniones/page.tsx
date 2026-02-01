@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = 'force-dynamic'; // <--- AGREGADO PARA EL BUILD DE VERCEL
 
 import { DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 import {
