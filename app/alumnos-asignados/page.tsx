@@ -1,5 +1,7 @@
 "use client";
-export const dynamic = 'force-dynamic'; // <--- AGREGADO PARA VERCEL
+export const dynamic = 'force-dynamic';
+
+import { Suspense } from 'react'; // 1. Importamos Suspense
 import { AddIcon, ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -18,7 +20,8 @@ import { Student } from "../alumnos/interfaces/student.interface";
 import AvailableStudentsModal from "../alumnos/modals/avilable-student.modal";
 import { useSidebar } from "../contexts/SidebarContext";
 
-const AlumnosAsignados: React.FC = () => {
+// Renombramos el componente original a Content para envolverlo abajo
+const AlumnosAsignadosContent: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -195,4 +198,11 @@ const AlumnosAsignados: React.FC = () => {
   );
 };
 
-export default AlumnosAsignados;
+// 2. Exportación con el límite de Suspense para el build de Vercel
+export default function AlumnosAsignadosPage() {
+  return (
+    <Suspense fallback={<Box p={10}>Cargando información de alumnos...</Box>}>
+      <AlumnosAsignadosContent />
+    </Suspense>
+  );
+}

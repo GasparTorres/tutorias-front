@@ -1,12 +1,14 @@
 "use client";
-export const dynamic = 'force-dynamic'; // <--- AGREGADO PARA EL BUILD DE VERCEL
+export const dynamic = 'force-dynamic';
 
-import { Td, Tr } from "@chakra-ui/react";
+import { Suspense } from 'react'; // 1. Importamos Suspense
+import { Td, Tr, Box } from "@chakra-ui/react";
 import { useState } from "react";
 import GenericTable from "../../common/components/generic-table";
 import { CareerStudent } from "./interfaces/career-student.interface";
 
-const Carrera: React.FC = () => {
+// Renombramos el componente original a Content
+const CarreraContent: React.FC = () => {
   const [career, setCareer] = useState<CareerStudent[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,4 +41,11 @@ const Carrera: React.FC = () => {
   );
 };
 
-export default Carrera;
+// 2. Exportación con el límite de Suspense para evitar errores de compilación en Vercel
+export default function CarreraPage() {
+  return (
+    <Suspense fallback={<Box p={10}>Cargando información de carrera...</Box>}>
+      <CarreraContent />
+    </Suspense>
+  );
+}
