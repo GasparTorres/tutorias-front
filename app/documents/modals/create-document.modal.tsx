@@ -19,6 +19,15 @@ import {
 import React, { useState } from "react";
 import { DocumentService } from "../../../services/document-service";
 
+const isValidUrl = (string: string) => {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
+
 export type CreateDocumentModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -39,8 +48,12 @@ const CreateDocumentModal: React.FC<CreateDocumentModalProps> = ({
   const handleSubmit = async () => {
     if (!name.trim())
       return toast({ title: "Ingrese un nombre", status: "warning" });
-    if (!url.trim())
+    if (!url.trim()) {
+      return toast({ title: "Ingrese una URL", status: "warning" });
+    }
+    if (!isValidUrl(url.trim())) {
       return toast({ title: "Ingrese una URL válida", status: "warning" });
+    }
     setSubmitting(true);
     try {
       const dto = {
@@ -50,7 +63,7 @@ const CreateDocumentModal: React.FC<CreateDocumentModalProps> = ({
       };
 
       await DocumentService.createDocument(dto);
-      toast({ title: "Documento creado con éxito.", status: "success" }); 
+      toast({ title: "Documento creado con éxito.", status: "success" });
       onCreated?.();
       onClose();
       setName("");

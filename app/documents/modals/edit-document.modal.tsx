@@ -19,6 +19,15 @@ import {
 import React, { useEffect, useState } from "react";
 import { DocumentService } from "../../../services/document-service";
 
+const isValidUrl = (string: string) => {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
+
 export type EditDocumentModalProps = {
   isOpen: boolean;
   onClose: () => void;
