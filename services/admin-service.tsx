@@ -11,6 +11,7 @@ import { TutorPatchMe } from "../app/profile/interfaces/tutor-patch-me.interface
 import { CreateMeetingBody } from "../app/reuniones/type/create-meeting-body.type";
 import { GetMeetingsResp } from "../app/reuniones/type/get-meeting-response.type";
 import { ReportInfo } from "../app/reuniones/type/report-info.type";
+import { ResponseAllTutors } from "../app/tutores/interfaces/response-all-tutors.interface";
 import { ResponseTutor } from "../app/tutores/interfaces/response-tutor.interface";
 import axiosInstance from "../axiosConfig";
 import { CreateUser } from "./interfaces/createUser";
@@ -173,6 +174,26 @@ export const UserService = {
   async schedule(body: CreateMeetingBody) {
     const res = await axiosInstance.post(`/meetings/schedule-meeting`, body);
     return res.data;
+  },
+
+  async getAllTutors(): Promise<ResponseAllTutors[]> {
+    try {
+      const response = await axiosInstance.get<{
+        total?: number;
+        data: ResponseAllTutors[];
+      }>(`${urlTutors}`);
+
+      const payload = response.data;
+      if (Array.isArray(payload)) {
+        return payload;
+      }
+
+      return payload.data ?? [];
+    } catch (error: any) {
+      throw new Error(
+        `No se pudieron obtener los tutores. ${error.message || error}`,
+      );
+    }
   },
 
   async fetchTutorById(tutorId: number): Promise<ResponseTutor> {
