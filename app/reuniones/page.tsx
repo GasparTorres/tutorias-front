@@ -1,4 +1,6 @@
 "use client";
+export const dynamic = 'force-dynamic';
+import { Suspense } from 'react';
 
 import { DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 import {
@@ -1161,4 +1163,10 @@ const Reuniones: React.FC = () => {
   );
 };
 
-export default Reuniones;
+export default function Page() {
+  return (
+    <Suspense fallback={<Box p={10}>Cargando módulo de reuniones...</Box>}>
+      <Reuniones />
+    </Suspense>
+  );
+}

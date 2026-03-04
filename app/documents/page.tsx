@@ -1,5 +1,7 @@
 "use client";
+export const dynamic = 'force-dynamic';
 
+import { Suspense } from 'react'; // 1. Importamos Suspense
 import {
   DeleteIcon,
   EditIcon,
@@ -30,7 +32,8 @@ import CreateDocumentModal from "./modals/create-document.modal";
 import EditDocumentModal from "./modals/edit-document.modal";
 import ViewDocumentModal from "./modals/view-document.modal";
 
-const DocumentsPage: React.FC = () => {
+// Renombramos el componente original a Content
+const DocumentsContent: React.FC = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [total, setTotal] = useState(0);
@@ -215,7 +218,7 @@ const DocumentsPage: React.FC = () => {
                   <MenuButton
                     as={Button}
                     rightIcon={<SmallAddIcon />}
-                    backgroundColor="gray.200" 
+                    backgroundColor="gray.200"
                     color="gray.700"
                     borderRadius="10px"
                     px={6}
@@ -276,4 +279,11 @@ const DocumentsPage: React.FC = () => {
   );
 };
 
-export default DocumentsPage;
+// 2. Exportación con el límite de Suspense para el build de Vercel
+export default function DocumentsPage() {
+  return (
+    <Suspense fallback={<Box p={10}>Cargando documentos...</Box>}>
+      <DocumentsContent />
+    </Suspense>
+  );
+}

@@ -1,14 +1,15 @@
 "use client";
+export const dynamic = 'force-dynamic'; // <--- AGREGADO PARA EL BUILD DE VERCEL
 import { DeleteIcon, EditIcon, ViewIcon } from "@chakra-ui/icons";
 import {
   IconButton,
   Select,
+  Box,
   Td,
   Tooltip,
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import DeleteModal from "../../common/components/modals/detele.modal";
 import ImportModal from "../../common/components/modals/import.modal";
@@ -1104,4 +1105,10 @@ const Estudiantes: React.FC = () => {
   );
 };
 
-export default Estudiantes;
+export default function Page() {
+  return (
+    <Suspense fallback={<Box p={10}>Cargando lista de alumnos...</Box>}>
+      <Estudiantes />
+    </Suspense>
+  );
+}

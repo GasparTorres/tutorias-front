@@ -1,4 +1,7 @@
 "use client";
+export const dynamic = 'force-dynamic';
+
+import { Suspense } from 'react'; // 1. Importamos Suspense
 import { AddIcon, ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -17,7 +20,8 @@ import { Student } from "../alumnos/interfaces/student.interface";
 import AvailableStudentsModal from "../alumnos/modals/avilable-student.modal";
 import { useSidebar } from "../contexts/SidebarContext";
 
-const AlumnosAsignados: React.FC = () => {
+// Renombramos el componente original a Content para envolverlo abajo
+const AlumnosAsignadosContent: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -118,27 +122,6 @@ const AlumnosAsignados: React.FC = () => {
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  const renderStudentRow = (student: Student) => (
-    <Tr key={student.id}>
-      <Td>{student.user.name}</Td>
-      <Td>{student.user.lastName}</Td>
-      <Td>{student.user.email}</Td>
-      <Td>
-        <IconButton
-          icon={<DeleteIcon boxSize={5} />}
-          aria-label="Eliminar"
-          backgroundColor="white"
-          _hover={{
-            borderRadius: 15,
-            backgroundColor: "#318AE4",
-            color: "White",
-          }}
-          onClick={() => handleDeleteAssignment(student.id)}
-        />
-      </Td>
-    </Tr>
-  );
-
   return (
     <>
       {error && <p>{error}</p>}
@@ -157,7 +140,7 @@ const AlumnosAsignados: React.FC = () => {
 
       <GenericTable<Student>
         caption={`Alumnos asignados a ${tutorName || "—"}`}
-        data={students} 
+        data={students}
         TableHeader={TableHeader}
         renderRow={(student: Student, index: number) => (
           <Tr key={student.id}>
@@ -179,12 +162,10 @@ const AlumnosAsignados: React.FC = () => {
             </Td>
           </Tr>
         )}
-        /* paginado (server mode) */
         currentPage={page}
         itemsPerPage={resultsPerPage}
         totalItems={total}
         onPageChange={onPageChange}
-        /* búsqueda / orden */
         searchTerm={searchTerm}
         onSearch={(t) => {
           setSearchTerm(t);
@@ -192,7 +173,6 @@ const AlumnosAsignados: React.FC = () => {
         }}
         orderBy={orderBy}
         onOrderChange={handleOrderChange}
-        /* UI */
         filter={false}
         topRightComponent={
           <IconButton
@@ -218,4 +198,11 @@ const AlumnosAsignados: React.FC = () => {
   );
 };
 
-export default AlumnosAsignados;
+// 2. Exportación con el límite de Suspense para el build de Vercel
+export default function AlumnosAsignadosPage() {
+  return (
+    <Suspense fallback={<Box p={10}>Cargando información de alumnos...</Box>}>
+      <AlumnosAsignadosContent />
+    </Suspense>
+  );
+}
