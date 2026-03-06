@@ -180,10 +180,10 @@ const SideBar = () => {
                       src="/icons/tutors-icon.svg"
                       width={30}
                       height={30}
-                      alt="Tutores"
+                      alt="Accesores"
                       priority
                     />
-                    {!collapsed && <Text ml="0.5rem">Tutores</Text>}
+                    {!collapsed && <Text ml="0.5rem">Accesores</Text>}
                   </Flex>
                 </Link>
               </Box>

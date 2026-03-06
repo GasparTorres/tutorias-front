@@ -28,7 +28,7 @@ export default function TutorCreateModal({
       isOpen={isOpen}
       onClose={onClose}
       onCreateSuccess={onCreateSuccess}
-      title="Tutor"
+      title="Accesor"
       fields={tutorFields}
       createFn={(formData: {
         email: string;

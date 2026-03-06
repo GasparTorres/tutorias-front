@@ -1,7 +1,12 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { toastError, toastSuccess } from "./common/feedback/toast-standalone";
 
+// 1. DEFINICIÓN DE VARIABLES DE ENTORNO
+// Extraemos la URL de tu .env.local
+const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+
 function getCookie(name: string): string | undefined {
+  if (typeof document === "undefined") return undefined; // Salvaguarda para SSR
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop()?.split(";").shift();
@@ -54,8 +59,8 @@ function defaultSuccessMessage(method?: string) {
 
 // 2. CREACIÓN DE INSTANCIA
 const axiosInstance = axios.create({
-  baseURL: baseURL, // Usamos la URL limpia
-  timeout: 15000,    // Aumentamos un poco por si el Cold Start de Vercel es lento
+  baseURL: baseURL, // Ahora la variable está definida arriba
+  timeout: 15000,   // Tiempo de espera para evitar bloqueos
 });
 
 axiosInstance.interceptors.request.use(
@@ -65,10 +70,6 @@ axiosInstance.interceptors.request.use(
       config.headers = config.headers ?? {};
       config.headers["Authorization"] = `Bearer ${token}`;
     }
-
-    // LOG DE SEGURIDAD (Solo para desarrollo):
-    // console.log("Petición a:", config.baseURL + "/" + config.url);
-
     return config;
   },
   (error) => Promise.reject(error),
@@ -87,7 +88,6 @@ axiosInstance.interceptors.response.use(
   (error: AxiosError) => {
     const config = error.config as AxiosRequestConfig | undefined;
 
-    // Manejo automático de redirección al login si el token expira (401)
     if (error.response?.status === 401 && typeof window !== "undefined") {
       document.cookie = "authTokens=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       if (!window.location.pathname.includes("/login")) {

@@ -211,7 +211,7 @@ export default function FilterMeetingsModal({
                 }}
               />
 
-              <FormLabel mt={4}>Tutor</FormLabel>
+              <FormLabel mt={4}>Accesor</FormLabel>
               <AsyncSelect
                 cacheOptions
                 defaultOptions={
@@ -226,7 +226,7 @@ export default function FilterMeetingsModal({
                     tutorId: opt ? (opt as Option).value : undefined,
                   }))
                 }
-                placeholder="Buscar tutor por nombre o apellido..."
+                placeholder="Buscar accesor por nombre o apellido..."
                 styles={{
                   control: (base) => ({
                     ...base,

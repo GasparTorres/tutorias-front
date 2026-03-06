@@ -71,7 +71,7 @@ const Tutores: React.FC = () => {
       setError(null);
     } catch (e) {
       console.error("Error fetching tutors:", e);
-      setError("No se pudieron cargar los tutores.");
+      setError("No se pudieron cargar los accesores.");
     } finally {
       setLoading(false);
     }
@@ -252,7 +252,7 @@ const Tutores: React.FC = () => {
         <GenericTable
           data={tutors || []}
           TableHeader={TableHeader}
-          caption="Tutores"
+          caption="Accesores"
           actions={false}
           renderRow={renderTutorRow}
           showAddMenu={true}
@@ -272,8 +272,8 @@ const Tutores: React.FC = () => {
         isOpen={isEditModalOpen}
         onClose={closeEditModal}
         onConfirm={handleEditConfirm}
-        entityName="tutor"
-        title="Editar Tutor"
+        entityName="accesor"
+        title="Editar Accesor"
         formData={editFormData}
         onInputChange={handleEditInputChange}
       />
@@ -282,7 +282,7 @@ const Tutores: React.FC = () => {
         isOpen={isDeleteModalOpen}
         onClose={closeDeleteModal}
         onDelete={handleDeleteConfirm}
-        entityName="tutor"
+        entityName="accesor"
         entityDetails={
           selectedTutor
             ? `${selectedTutor.user.name} ${selectedTutor.user.lastName}`
